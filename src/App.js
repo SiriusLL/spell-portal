@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import "./App.css";
+import abi from "./utils/ActivationPortal.json";
 
 export default function App() {
   const [currentAccount, setCurrentAccount] = useState("");
+  const contractAddress = "0xFFCb86652d6a437b2fBF1dCFdc6CBd8fa30704Eb";
+  const contractABI = abi.abi;
+  console.log("a", abi.abi);
 
   // check if wallet is connected if true set state to current address
   const IsWalletConnected = async () => {
@@ -60,7 +64,29 @@ export default function App() {
   useEffect(() => {
     IsWalletConnected();
   });
-  const portal = () => {};
+  // console.log("e", ethers);
+  const portal = async () => {
+    try {
+      const { ethereum } = window;
+
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const PortalContract = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          signer
+        );
+
+        let count = await PortalContract.getTotalPortalsOpen();
+        console.log("Retrieved total portal count . . .", count.toNumber());
+      } else {
+        console.log("Ethereum object doesn't exsit!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="mainContainer">
@@ -73,7 +99,7 @@ export default function App() {
           receive a gift through the portal.
         </div>
 
-        <button className="portalButton" onClick={disconnect}>
+        <button className="portalButton" onClick={portal}>
           Cast a spell
         </button>
 
