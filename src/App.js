@@ -115,9 +115,15 @@ export default function App() {
           receive a gift through the portal.
         </div>
 
-        <button className="portalButton" onClick={portal}>
-          Activate Portal
-        </button>
+        {currentAccount ? (
+          <button className="portalButton" onClick={portal}>
+            Activate Portal
+          </button>
+        ) : (
+          <button className="portalButton" onClick={connectWallet}>
+            Connect Wallet
+          </button>
+        )}
 
         {totalPortalsOpen &&
           (isLoading ? (
@@ -125,12 +131,6 @@ export default function App() {
           ) : (
             <p className="bio">Total portals open: {totalPortalsOpen}</p>
           ))}
-
-        {!currentAccount && (
-          <button className="portalButton" onClick={connectWallet}>
-            Connect Wallet
-          </button>
-        )}
       </div>
     </div>
   );
