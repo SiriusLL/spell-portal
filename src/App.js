@@ -88,6 +88,9 @@ export default function App() {
 
         const portalTxn = await PortalContract.activatePortal();
         console.log("Mining...", portalTxn);
+
+        await portalTxn.wait();
+        console.log("Mined -- ", portalTxn.hash);
         // const transComplete = await provider.waitForTransaction(
         //   transComplete.hash
         // );
