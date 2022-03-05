@@ -11,7 +11,7 @@ export default function App() {
 
   const contractAddress = "0xFFCb86652d6a437b2fBF1dCFdc6CBd8fa30704Eb";
   const contractABI = abi.abi;
-  console.log("a", abi.abi);
+  console.log("abi", abi.abi);
 
   // check if wallet is connected if true set state to current address
   const IsWalletConnected = async () => {
@@ -91,12 +91,10 @@ export default function App() {
 
         await portalTxn.wait();
         console.log("Mined -- ", portalTxn.hash);
-        // const transComplete = await provider.waitForTransaction(
-        //   transComplete.hash
-        // );
 
         count = await PortalContract.getTotalPortalsOpen();
         console.log("Retrieved total wave count...", count.toNumber());
+
         setTotalPortalsOpen(count.toNumber());
         setIsLoading(false);
       } else {
@@ -106,7 +104,7 @@ export default function App() {
       console.log(error);
     }
   };
-  console.log("t", totalPortalsOpen);
+
   return (
     <div className="mainContainer">
       <div className="dataContainer">
@@ -127,7 +125,7 @@ export default function App() {
             Connect Wallet
           </button>
         )}
-
+        {!totalPortalsOpen && isLoading ? <Loader /> : ""}
         {totalPortalsOpen &&
           (isLoading ? (
             <Loader />
