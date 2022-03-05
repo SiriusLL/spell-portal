@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import "./App.css";
 import abi from "./utils/ActivationPortal.json";
+import Loader from "./components/Loader";
 
 export default function App() {
   const [currentAccount, setCurrentAccount] = useState("");
+  const [totalPortalsOpen, setTotalPortalsOpen] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const contractAddress = "0xFFCb86652d6a437b2fBF1dCFdc6CBd8fa30704Eb";
   const contractABI = abi.abi;
   console.log("a", abi.abi);
@@ -63,8 +67,8 @@ export default function App() {
 
   useEffect(() => {
     IsWalletConnected();
-  });
-  // console.log("e", ethers);
+  }, []);
+
   const portal = async () => {
     try {
       const { ethereum } = window;
@@ -78,8 +82,20 @@ export default function App() {
           signer
         );
 
+        setIsLoading(true);
         let count = await PortalContract.getTotalPortalsOpen();
         console.log("Retrieved total portal count . . .", count.toNumber());
+
+        const portalTxn = await PortalContract.activatePortal();
+        console.log("Mining...", portalTxn);
+        // const transComplete = await provider.waitForTransaction(
+        //   transComplete.hash
+        // );
+
+        count = await PortalContract.getTotalPortalsOpen();
+        console.log("Retrieved total wave count...", count.toNumber());
+        setTotalPortalsOpen(count.toNumber());
+        setIsLoading(false);
       } else {
         console.log("Ethereum object doesn't exsit!");
       }
@@ -87,7 +103,7 @@ export default function App() {
       console.log(error);
     }
   };
-
+  console.log("t", totalPortalsOpen);
   return (
     <div className="mainContainer">
       <div className="dataContainer">
@@ -100,8 +116,15 @@ export default function App() {
         </div>
 
         <button className="portalButton" onClick={portal}>
-          Cast a spell
+          Activate Portal
         </button>
+
+        {totalPortalsOpen &&
+          (isLoading ? (
+            <Loader />
+          ) : (
+            <p className="bio">Total portals open: {totalPortalsOpen}</p>
+          ))}
 
         {!currentAccount && (
           <button className="portalButton" onClick={connectWallet}>
