@@ -10,7 +10,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [allWaves, setAllWaves] = useState([]);
 
-  const contractAddress = "0x63aDC3577F3f8e0b4146e98cf70436F36ca13676";
+  const contractAddress = "0x7164fA88335b1E33EA8ACb7608c851a65dAC4C2a";
   const contractABI = abi.abi;
   console.log("abi", abi.abi);
 
@@ -33,7 +33,6 @@ export default function App() {
         const account = accounts[0];
         console.log("Found authorized account: ", account);
         setCurrentAccount(account);
-        getAllPortals();
       } else {
         console.log("No authorized account found");
       }
@@ -71,40 +70,6 @@ export default function App() {
     IsWalletConnected();
   }, []);
 
-  const getAllPortals = async () => {
-    try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const PortalContract = new ethers.Contract(
-          contractAddress,
-          contractABI,
-          signer
-        );
-
-        console.log("munkey", PortalContract);
-        const portals = await PortalContract.getAllPortals();
-        console.log("portals", portals);
-
-        let portalsCleaned = [];
-        portals.forEach((portal) => {
-          portalsCleaned.push({
-            address: portal.Activator,
-            timestamp: new Date(portal.timestamp * 1000),
-            message: portal.message,
-          });
-        });
-        console.log("*****", portalsCleaned);
-        setAllWaves(portalsCleaned);
-      } else {
-        console.log("Ethereum object doesn't exist!");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const portal = async () => {
     try {
       const { ethereum } = window;
@@ -122,9 +87,7 @@ export default function App() {
         let count = await PortalContract.getTotalPortalsOpen();
         console.log("Retrieved total portal count . . .", count.toNumber());
 
-        const portalTxn = await PortalContract.activatePortal(
-          "this is a message"
-        );
+        const portalTxn = await PortalContract.activatePortal();
         console.log("Mining...", portalTxn);
 
         await portalTxn.wait();
