@@ -8,7 +8,8 @@ export default function App() {
   const [currentAccount, setCurrentAccount] = useState("");
   const [totalPortalsOpen, setTotalPortalsOpen] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [allWaves, setAllWaves] = useState([]);
+  const [allPortals, setAllPortals] = useState([]);
+  const [spell, setSpell] = useState("");
 
   const contractAddress = "0x63aDC3577F3f8e0b4146e98cf70436F36ca13676";
   const contractABI = abi.abi;
@@ -87,6 +88,9 @@ export default function App() {
         const portals = await PortalContract.getAllPortals();
         console.log("portals", portals);
 
+        let count = await PortalContract.getTotalPortalsOpen();
+        setTotalPortalsOpen(count.toNumber());
+
         let portalsCleaned = [];
         portals.forEach((portal) => {
           portalsCleaned.push({
@@ -96,7 +100,7 @@ export default function App() {
           });
         });
         console.log("*****", portalsCleaned);
-        setAllWaves(portalsCleaned);
+        setAllPortals(portalsCleaned);
       } else {
         console.log("Ethereum object doesn't exist!");
       }
@@ -122,9 +126,7 @@ export default function App() {
         let count = await PortalContract.getTotalPortalsOpen();
         console.log("Retrieved total portal count . . .", count.toNumber());
 
-        const portalTxn = await PortalContract.activatePortal(
-          "this is a message"
-        );
+        const portalTxn = await PortalContract.activatePortal(spell);
         console.log("Mining...", portalTxn);
 
         await portalTxn.wait();
@@ -135,12 +137,19 @@ export default function App() {
 
         setTotalPortalsOpen(count.toNumber());
         setIsLoading(false);
+        getAllPortals();
       } else {
         console.log("Ethereum object doesn't exsit!");
       }
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleMessage = (e) => {
+    // e.stopPropagation();
+    setSpell(e.target.value);
+    console.log("e", e.target.value);
   };
 
   return (
@@ -150,14 +159,27 @@ export default function App() {
 
         <div className="bio">
           I am a Wizard who travels the Zuvuya. Connect your Ethereum wallet and
-          open 1 or more portals to send a spell of manifestation and you might
-          receive a gift through the portal.
+          open a portal to send a spell of manifestation and you might receive a
+          gift through the portal.
         </div>
 
         {currentAccount ? (
-          <button className="portalButton" onClick={portal}>
-            Activate Portal
-          </button>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              portal();
+            }}
+          >
+            <input
+              className="spellInput"
+              type="text"
+              onChange={(e) => {
+                handleMessage(e);
+              }}
+              value={spell}
+            />
+            <button className="portalButton">Activate Portal</button>
+          </form>
         ) : (
           <button className="portalButton" onClick={connectWallet}>
             Connect Wallet
@@ -171,6 +193,17 @@ export default function App() {
             <p className="bio">Total portals open: {totalPortalsOpen}</p>
           ))}
       </div>
+      {allPortals
+        .map((portal, index) => {
+          return (
+            <div className="portalCard" key={index}>
+              <div>Message: {portal.message}</div>
+              <div>Address: {portal.address}</div>
+              <div>Time: {portal.timestamp.toString()}</div>
+            </div>
+          );
+        })
+        .reverse()}
     </div>
   );
 }
