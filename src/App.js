@@ -126,7 +126,9 @@ export default function App() {
         let count = await PortalContract.getTotalPortalsOpen();
         console.log("Retrieved total portal count . . .", count.toNumber());
 
-        const portalTxn = await PortalContract.activatePortal(spell);
+        const portalTxn = await PortalContract.activatePortal(spell, {
+          gasLimit: 300000,
+        });
         console.log("Mining...", portalTxn);
 
         await portalTxn.wait();
