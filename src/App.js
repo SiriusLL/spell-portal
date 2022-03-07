@@ -11,7 +11,7 @@ export default function App() {
   const [allPortals, setAllPortals] = useState([]);
   const [spell, setSpell] = useState("");
 
-  const contractAddress = "0x6A50ab9589D009b869F6445fe3b18F8F1F9A3643";
+  const contractAddress = "0x6d193CdCea096a08fe677700586762abcb8583aB";
   const contractABI = abi.abi;
   console.log("abi", abi.abi);
 
