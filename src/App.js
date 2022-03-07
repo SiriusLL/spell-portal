@@ -168,6 +168,7 @@ export default function App() {
             onSubmit={(e) => {
               e.preventDefault();
               portal();
+              setSpell("");
             }}
           >
             <input
