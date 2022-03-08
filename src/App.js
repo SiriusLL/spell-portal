@@ -91,13 +91,12 @@ export default function App() {
         let count = await PortalContract.getTotalPortalsOpen();
         setTotalPortalsOpen(count.toNumber());
 
-        let portalsCleaned = [];
-        portals.forEach((portal) => {
-          portalsCleaned.push({
+        portals.map((portal) => {
+          return {
             address: portal.Activator,
             timestamp: new Date(portal.timestamp * 1000),
             message: portal.message,
-          });
+          };
         });
         console.log("*****", portalsCleaned);
         setAllPortals(portalsCleaned);
@@ -108,6 +107,41 @@ export default function App() {
       console.log(error);
     }
   };
+
+  // listen for emitter events!
+  useEffect(() => {
+    let portalContract;
+
+    const onNewPortal = (from, timestamp, message) => {
+      console.log("NewPortal", from, timestamp, message);
+      setAllPortals((prevState) => [
+        ...prevState,
+        {
+          address: from,
+          timestamp: new Date(timestamp * 1000),
+          message: message,
+        },
+      ]);
+    };
+
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+
+      portalContract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        signer
+      );
+      portalContract.on("NewPortal", onNewPortal);
+    }
+
+    return () => {
+      if (portalContract) {
+        portalContract.off("NewPortal", onNewPortal);
+      }
+    };
+  }, []);
 
   const portal = async () => {
     try {
