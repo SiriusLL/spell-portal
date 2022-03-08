@@ -96,7 +96,7 @@ export default function App() {
         const portalsCleaned = portals.map((portal) => {
           return {
             address: portal.Activator,
-            timestamp: new Date(portal.timestamp * 1000),
+            timestamp: new Date(portal.timestamp * 1000).toLocaleString(),
             message: portal.message,
             name: portal.name,
           };
@@ -121,7 +121,7 @@ export default function App() {
         ...prevState,
         {
           address: from,
-          timestamp: new Date(timestamp * 1000),
+          timestamp: new Date(timestamp * 1000).toLocaleString(),
           message: message,
           name: name,
         },
@@ -262,13 +262,14 @@ export default function App() {
                 <div>{portal.name}'s Manifestation</div>
               </div>
               <div className="portalCardManifest">
-                <div></div>
                 <div>{portal.message}</div>
-                <div>{portal.address}</div>
               </div>
               <div className="portalCardFooter">
                 {/* <div>Address: {portal.address}</div> */}
-                <div>Time: {portal.timestamp.toString()}</div>
+                <div className="footerElements">{portal.address}</div>
+                <div className="footerElements">
+                  {portal.timestamp.toString()}
+                </div>
               </div>
             </div>
           );

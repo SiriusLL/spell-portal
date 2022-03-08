@@ -17,7 +17,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 600px;
+  /* width: 800px; */
+  width: 50%;
   box-shadow: 0 0 16px pink;
   background-color: #333;
   /* margin: 2em; */
@@ -78,7 +79,8 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 600px;
+  /* width: 800px; */
+  width: 55%;
   color: lightslategray;
   background-color: #333;
   border: 0;
@@ -112,10 +114,21 @@ form {
 
 .portalCardFooter {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+
+  justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
   background-color: #333;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+  /* overflow-wrap: break-word;
+  word-wrap: break-word; */
+}
+
+.footerElements {
+  overflow-x: scroll;
+  padding: 0px 5px 0px 5px;
+  word-wrap: break-word;
 }
