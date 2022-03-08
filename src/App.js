@@ -10,8 +10,9 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [allPortals, setAllPortals] = useState([]);
   const [spell, setSpell] = useState("");
+  const [name, setName] = useState("");
 
-  const contractAddress = "0x6d193CdCea096a08fe677700586762abcb8583aB";
+  const contractAddress = "0x0E84e8616291f0B47f7C60de160F828DD1dD2562";
   const contractABI = abi.abi;
   console.log("abi", abi.abi);
 
@@ -97,6 +98,7 @@ export default function App() {
             address: portal.Activator,
             timestamp: new Date(portal.timestamp * 1000),
             message: portal.message,
+            name: portal.name,
           };
         });
         console.log("*****", portalsCleaned);
@@ -113,14 +115,15 @@ export default function App() {
   useEffect(() => {
     let portalContract;
 
-    const onNewPortal = (from, timestamp, message) => {
-      console.log("NewPortal", from, timestamp, message);
+    const onNewPortal = (from, timestamp, message, name) => {
+      console.log("NewPortal", from, timestamp, message, name);
       setAllPortals((prevState) => [
         ...prevState,
         {
           address: from,
           timestamp: new Date(timestamp * 1000),
           message: message,
+          name: name,
         },
       ]);
     };
@@ -161,7 +164,7 @@ export default function App() {
         let count = await PortalContract.getTotalPortalsOpen();
         console.log("Retrieved total portal count . . .", count.toNumber());
 
-        const portalTxn = await PortalContract.activatePortal(spell, {
+        const portalTxn = await PortalContract.activatePortal(spell, name, {
           gasLimit: 300000,
         });
         console.log("Mining...", portalTxn);
@@ -189,8 +192,17 @@ export default function App() {
     console.log("e", e.target.value);
   };
 
+  const handleName = (e) => {
+    setName(e.target.value);
+    console.log(e.target.value);
+  };
+
   return (
     <div className="mainContainer">
+      <div className="warning">
+        Spell Portal is in development phase, please use Rinkeby network with
+        test eth.
+      </div>
       <div className="dataContainer">
         <div className="header">🧙‍♂️ Kablammy 🌬️🌒💫✨⚡️</div>
 
@@ -206,11 +218,22 @@ export default function App() {
               e.preventDefault();
               portal();
               setSpell("");
+              setName("");
             }}
           >
+            <input
+              className="spellInput"
+              type="text"
+              placeholder="Name"
+              onChange={(e) => {
+                handleName(e);
+              }}
+              value={name}
+            />
             <textarea
               className="spellInput"
               type="text"
+              placeholder="Your Spell Here"
               onChange={(e) => {
                 handleMessage(e);
               }}
@@ -236,13 +259,15 @@ export default function App() {
           return (
             <div className="portalCard" key={index}>
               <div className="portalCardHeader">
-                <div>Name</div>
+                <div>{portal.name}'s Manifestation</div>
               </div>
               <div className="portalCardManifest">
-                Message: {portal.message}
+                <div></div>
+                <div>{portal.message}</div>
+                <div>{portal.address}</div>
               </div>
               <div className="portalCardFooter">
-                <div>Address: {portal.address}</div>
+                {/* <div>Address: {portal.address}</div> */}
                 <div>Time: {portal.timestamp.toString()}</div>
               </div>
             </div>

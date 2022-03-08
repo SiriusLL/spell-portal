@@ -8,6 +8,10 @@
   /* border: 1px solid red; */
 }
 
+.warning {
+  color: pink;
+}
+
 .dataContainer {
   display: flex;
   flex-direction: column;
@@ -96,7 +100,8 @@ form {
 
 .portalCardManifest {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   background-color: rgba(255, 192, 203, 0.288);
   width: 100%;
