@@ -22,6 +22,7 @@ export default function App() {
 
       if (!ethereum) {
         console.log("Install Metamask!");
+        alert("Install metamask");
       } else {
         console.log("We have the ethereum object", ethereum);
       }
@@ -91,7 +92,7 @@ export default function App() {
         let count = await PortalContract.getTotalPortalsOpen();
         setTotalPortalsOpen(count.toNumber());
 
-        portals.map((portal) => {
+        const portalsCleaned = portals.map((portal) => {
           return {
             address: portal.Activator,
             timestamp: new Date(portal.timestamp * 1000),
@@ -207,7 +208,7 @@ export default function App() {
               setSpell("");
             }}
           >
-            <input
+            <textarea
               className="spellInput"
               type="text"
               onChange={(e) => {
@@ -234,9 +235,16 @@ export default function App() {
         .map((portal, index) => {
           return (
             <div className="portalCard" key={index}>
-              <div>Message: {portal.message}</div>
-              <div>Address: {portal.address}</div>
-              <div>Time: {portal.timestamp.toString()}</div>
+              <div className="portalCardHeader">
+                <div>Name</div>
+              </div>
+              <div className="portalCardManifest">
+                Message: {portal.message}
+              </div>
+              <div className="portalCardFooter">
+                <div>Address: {portal.address}</div>
+                <div>Time: {portal.timestamp.toString()}</div>
+              </div>
             </div>
           );
         })

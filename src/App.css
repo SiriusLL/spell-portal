@@ -34,6 +34,21 @@
   margin: 16px;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.spellInput {
+  margin: 16px;
+  padding: 8px;
+  border: 0;
+  border-radius: 5px;
+  background-color: #333;
+  color: pink;
+  box-shadow: 0 0 16px pink;
+}
+
 .portalButton {
   cursor: pointer;
   margin: 16px;
@@ -48,16 +63,6 @@
   box-shadow: 0 0 16px pink;
 }
 
-.spellInput {
-  margin: 16px;
-  padding: 8px;
-  border: 0;
-  border-radius: 5px;
-  background-color: #333;
-  color: pink;
-  box-shadow: 0 0 16px pink;
-}
-
 /* .spinner {
   height: 40%;
   font-size: 2em;
@@ -68,12 +73,44 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   width: 600px;
   color: lightslategray;
   background-color: #333;
   border: 0;
   border-radius: 5px;
   box-shadow: 0 0 16px pink;
-  padding: 16px;
+  /* padding: 16px; */
   margin: 1rem;
+}
+
+.portalCardHeader {
+  /* display: flex;
+  justify-content: center; */
+  padding: 0.5em;
+
+  color: rgba(13, 175, 161, 0.897);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.portalCardManifest {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 192, 203, 0.288);
+  width: 100%;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  color: rgb(226, 117, 226);
+}
+
+.portalCardFooter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #333;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
