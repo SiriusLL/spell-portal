@@ -128,7 +128,7 @@ form {
 }
 
 .footerElements {
-  overflow-x: scroll;
+  overflow-x: hidden;
   padding: 0px 5px 0px 5px;
   word-wrap: break-word;
 }
