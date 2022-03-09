@@ -177,7 +177,7 @@ export default function App() {
 
         setTotalPortalsOpen(count.toNumber());
         setIsLoading(false);
-        getAllPortals();
+        // getAllPortals();
       } else {
         console.log("Ethereum object doesn't exsit!");
       }
