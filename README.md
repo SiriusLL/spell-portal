@@ -11,9 +11,13 @@ run `npm install` to install dependancies
 
 `npm start` will open a browser at localhost:3000 as a default
 
-This Dapp only uses Rinkeby test Eth, make sure you are on the right network, do not use real Eth you will lose it.
+- In App.js replace contractAddress with the contract address given by hardhat in the instructions
 
-You need metamask to use this app you can install it [here](https://metamask.io/)
+- Copy the contents of the file in the back-end in contracts/ActivationPortal/ActivationPortal.json and paste it into src/utils/ActivationPortal.json in the front-end.
+
+- This Dapp only uses Rinkeby test Eth, make sure you are on the right network, do not use real Eth you will lose it.
+
+- You need metamask to use this app you can install it [here](https://metamask.io/)
 
 ### Images
 ![Spell Portal](https://raw.githubusercontent.com/SiriusLL/spell-portal/master/public/spellportal.png)
